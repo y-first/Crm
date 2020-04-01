@@ -1,0 +1,82 @@
+.h-left {
+	height: 863px;
+	background:red; 
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.h-left li a {
+	color: white;
+}
+
+.left-h {
+	width: 100%;
+	height: 20%;
+	background: silver;
+}
+
+.h-left li a:hover {
+	background-color: #1B6D85;
+	border-color: #428bca;
+}
+
+.click.collapsed>span.glyphicon-chevron-toggle:before {
+	content: "\e114";
+}
+
+.click>span.glyphicon-chevron-toggle:before {
+	content: "\e113";
+}
+
+.r-h {
+	height: 60px;
+	line-height: 60px;
+}
+
+.r-h ul {
+	float: right;
+	list-style: none;
+}
+
+.r-h ul li a {
+	text-decoration: none;
+	color: #999;
+}
+
+.r-h ul li a:hover {
+	background: #f4f5f6;
+	color: #666;
+	display: block;
+}
+
+.r-h ul li {
+	float: left;
+	width: 100px;
+	height: 60px;
+	text-align: center;
+	border-left: 1px solid #f4f5f6;
+}
+
+.r-m {
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	background: #eee;
+}
+
+.r-m>div {
+	width: 15%;
+	background: white;
+	height: 40px;
+	border-top: 1px solid #eee;
+}
+
+.r-b {
+	height: 745px;
+	margin-top: 15px;
+}
+
+.h-left ul>li>ul>li {
+	text-indent: 10px
+}
+

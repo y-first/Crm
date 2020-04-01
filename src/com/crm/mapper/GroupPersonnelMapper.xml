@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crm.mapper.GroupPersonnelMapper" >
+<select id="selectByid" parameterType="Integer" resultType="GroupPersonnel">
+select gp.*,u.name as unitname,g.name as groupname from group_personnel gp, personnel p,unit u,group2 g where g.id=gp.groupid and gp.pid=p.id and p.unit=u.id and Groupid=#{value}
+</select>
+<delete id="deletegroupperson" parameterType="Integer">
+delete from  group_personnel where id=#{value}
+</delete>
+<insert id="addgroupperson" parameterType="GroupPersonnel">
+insert group_personnel(Name,Groupid,Pid,AccessCountry,head,Note,role)  value(#{name},#{groupid},#{pid},#{accesscountry},#{head},#{note},#{role}) 
+</insert>
+<select id="selectBypid" parameterType="Integer" resultType="GroupPersonnel">
+SELECT  * FROM group_personnel WHERE Pid=#{value}  ORDER BY id DESC  LIMIT 1
+</select>
+
+<!-- 根据团组id和人员id查询改该员工是否在该团组 -->
+<select id="queryByidAndPid" parameterType="Integer" resultType="Integer">
+SELECT  count(*) FROM group_personnel WHERE pid=#{0} and groupid=#{1}
+</select>
+
+<!-- 根据人员id查询出访信息 -->
+<select id="queryByPid" parameterType="Integer" resultType="group2">
+select g.* from group_personnel gp,group2 g where gp.groupid=g.id and pid=#{value}
+</select>
+
+
+</mapper>

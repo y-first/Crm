@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crm.mapper.AchievmentMapper">
+	<insert id="Achievmentadd" parameterType="achievment">
+		insert
+		achievment(id,name,Registration,time,type,unit,person,note,Entrytime)
+		value(#{id},#{name},#{registration},#{time},#{type},#{unit},#{person},#{note},#{entrytime})
+	</insert>
+	<select id="Achievmentfindall" resultType="achievment">
+		select * from
+		achievment order by id asc
+	</select>
+	<select id="AchievmentByid" parameterType="Integer"
+		resultType="achievment">
+		select a.*,u.name as unitname from achievment a,unit u where a.unit=u.id and a.id=#{value}
+	</select>
+	<select id="AchievmentByyear" parameterType="String"
+		resultType="achievment">
+		select * from achievment where time like '%${value}%'
+	</select>
+	<update id="Achievmentudate" parameterType="achievment">
+		update achievment set
+		name=#{name},Registration=#{registration},time=#{time},type=#{type},unit=#{unit},person=#{person},note=#{note}
+		where id=#{id}
+	</update>
+	<delete id="Achievmentdelete" parameterType="Integer">
+		delete from
+		achievment where id=#{value}
+	</delete>
+	<select id="selectbyname" parameterType="String"
+		resultType="achievment">
+		select * from achievment where name=#{value}
+	</select>
+	<select id="achiBynt" parameterType="achievment"
+		resultType="achievment">
+		select * from achievment
+		<where>
+			<if test="name!=''">
+				name like '%${name}%'
+			</if>
+			<if test="type!=''">
+				and type like '%${type}%'
+			</if>
+		</where>
+	</select>
+	<delete id="achdelete" parameterType="java.util.List">
+		delete from achievment where id in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="haha">
+			#{haha}
+		</foreach>
+	</delete>
+
+	<select id="achfind" parameterType="string"
+		resultType="achievment">
+		select a.*,u.name as unitname from achievment a,unit u where a.unit=u.id and unit= #{value}
+	</select>
+
+	<select id="Achievmentfindall1" parameterType="int" resultType="achievment">
+		select a.*,u.name as unitname
+		from achievment a,unit u where a.unit=u.id
+		<!-- limit #{value},8 -->
+	</select>
+	
+	<select id="achfind1" parameterType="page" resultType="achievment">
+		select a.*,u.name as unitname from achievment a,unit u where a.unit=u.id and unit= #{value}
+		limit #{pg},8
+	</select>
+	<update id="updateunit" parameterType="unit" >
+	update achievment set unit=#{name} where unit=#{uname}
+	</update>
+	
+</mapper>

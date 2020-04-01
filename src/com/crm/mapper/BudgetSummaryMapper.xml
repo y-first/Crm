@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crm.mapper.BudgetSummaryMapper" >
+<insert id="budgadd" parameterType="BudgetSummary">
+insert budget_summary(name,UNITNAME,Expenses,Expensesx,sum)
+value(#{name},#{unitname},#{expenses},#{expensesx},#{sum})
+</insert>
+<select id="selectall" resultType="BudgetSummary">
+select * from budget_summary
+</select>
+<select id="selectall2" parameterType="String" resultType="BudgetSummary">
+select * from budget_summary where  Name=#{value}
+</select>
+</mapper>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.crm.mapper.OrganizationMapper" >
+<insert id="insert" parameterType="Organization">
+INSERT organization(NAME,DIRECTOR,Sgeneral,Sunit,OFFICE,LINKMAN,PHONE,EONTIME,INFORMATTION,NOTE) 
+VALUE(#{name},#{director},#{sgeneral},#{sunit},#{office},#{linkman},#{phone},#{eontime},#{information},#{note})
+</insert>
+<update id="updateunito" parameterType="unit">
+update organization set sunit=#{name} where sunit=#{uname}
+</update>
+</mapper>

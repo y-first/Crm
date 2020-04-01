@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crm.mapper.ProjectMapper">
+	<insert id="Projectadd" parameterType="project">
+		INSERT
+		project(NAME,Registration,Ework,linkman,phone,EXPENDITURE,PROGRESS,ApplicationTime,Eway,Eunit,AcceptanceTime,ACHIEVEMENT,NOTE)
+		VALUE(#{name},#{registration},#{ework},#{linkman},#{phone},#{expenditure},#{progress},#{applicationtime},#{eway},#{eunit},#{acceptancetime},#{achievement},#{note})
+	</insert>
+
+	<delete id="pdelete" parameterType="string">
+		delete from project where id
+		= #{id}
+	</delete>
+	<select id="pselect" resultType="project">
+		select *
+		from project where Ework
+		= #{uid}
+	</select>
+
+	<select id="pselectall" parameterType="project"
+		resultType="project">
+		SELECT * FROM project WHERE 
+	     NOW()>DATE_SUB(AcceptanceTime, INTERVAL 1 MONTH) 
+	     and AcceptanceTime>NOW()   AND dt=0
+	     ORDER BY AcceptanceTime DESC
+	</select>
+
+	<select id="pselect2" resultType="project">
+		select p.*,u1.name as eworkname,u2.name as eunitname
+		from project p,unit u1,unit u2
+		<where>
+			p.ework=u1.id and p.eunit=u2.id
+				and p.name like '%${name}%'
+			<if test="ework != ''">
+				  and Ework like '%${ework}%' 
+			</if>
+			
+		</where><!-- 
+		limit #{totalUsers},8 -->
+	</select>
+<select id="selectbyname" parameterType="String" resultType="project">
+select * from project where name=#{value} 
+</select>
+
+	<select id="pselectall2" parameterType="project"
+		resultType="project">
+		select p.*,u1.name as eworkname,u2.name as eunitname
+		from project p,unit u1,unit u2
+		where
+			 p.ework=u1.id and p.eunit=u2.id 
+				and p.name like '%${name}%'
+		
+			<if test="ework != '' and ework!=null">
+				and Ework  = #{ework}
+			</if> 
+		<!--</where> 
+		limit #{totalUsers},8 -->
+	</select>
+
+	<select id="pj" parameterType="string" resultType="project">
+		select * from
+		project where id= #{id}
+	</select>
+
+	<update id="pupdate" parameterType="project">
+		update project set name
+		=#{name} ,id=#{id}
+		,Registration=#{registration},Ework=#{ework},linkman=#{linkman},phone=#{phone},EXPENDITURE=#{expenditure},PROGRESS=#{progress},ApplicationTime=#{applicationtime},eway=#{eway},eunit=#{eunit},AcceptanceTime=#{acceptancetime},ACHIEVEMENT=#{achievement},NOTE=#{note}
+		where id =#{id}
+	</update>
+
+	<select id="pfile" parameterType="project" resultType="project">
+		select * from project
+		<where>
+			<if test="name!=''">
+				name like '%${name}%'
+			</if>
+			<if test="ework != '' and ework!=null">
+				and Ework like '%${ework}%'
+			</if>
+		</where>
+	</select>
+
+	<select id="pfileall" parameterType="project"
+		resultType="project">
+		select * from project
+		<where>
+			<if test="name!=''">
+				name like '%${name}%'
+			</if>
+			<if test="ework!=''">
+				and Ework = #{ework}
+			</if>
+		</where>
+	</select>
+	<update id="remind" parameterType="project">
+		update project set dt = 1
+		where  id=#{id}
+	</update>
+
+	<select id="nselect" parameterType="project"
+		resultType="project">
+		select * from project where Ework=#{ework} and dt= 0
+	</select>
+
+	<update id="up" parameterType="project">
+		update project set dt=1 where
+	    id =#{id}
+	</update>
+
+	<select id="ps" parameterType="string" resultType="project">
+		select * from
+		project where ework = #{uid} and dt=1
+	</select>
+		<delete id="deletall"  parameterType="java.util.List">
+		delete from project where id in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="haha">
+			#{haha}
+		</foreach>
+	</delete>
+	<update id="updateunitpr" parameterType="unit">
+	update project set ework=#{name} where ework=#{uname}
+	</update>
+	<update id="updateunitpro" parameterType="unit">
+	update project set Eunit=#{name} where Eunit=#{uname}
+	</update>
+</mapper>

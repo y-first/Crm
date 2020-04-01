@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crm.mapper.UnitMapper" >
+
+<select id="findall" resultType="unit">
+select * from unit
+</select>
+<insert id="addUnit" parameterType="unit">
+insert unit(name,type,code)
+value(#{name},#{type},#{code})
+</insert>
+<delete id="removeUnit" parameterType="Integer">
+	delete FROM unit
+		where id=#{value}
+</delete>
+<select id="selectyunitByid" parameterType="Integer" resultType="unit">
+select * from unit where id=#{value}
+</select>
+<!-- 根据名称查询单位 -->
+<select id="selectunitByName" parameterType="String" resultType="unit">
+select * from unit where name=#{value}
+</select>
+<update id="updateunitname" parameterType="unit">
+update unit set name=#{name},type=#{type},code=${code} where id=#{id}
+</update>
+</mapper>

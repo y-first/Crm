@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.mapper.TrainingMapper">
+	<insert id="Trainingadd" parameterType="Training">
+		INSERT
+		training(NAME,HELD,Ptime,Atime,PARTICIPATION,Pfunds,Afunds,NOTE,unitid,target)
+		VALUE(#{name},#{held},#{ptime},#{atime},#{participation},#{pfunds},#{afunds},#{note},#{unitid},#{target})
+	</insert>
+	<select id="Trainingfindall" resultType="Training">
+		select t.*,u.name as unitname from training t,unit u where t.unitid=u.id
+	</select>
+	<select id="selectbytname" parameterType="String"
+		resultType="Training">
+		select * from training where name=#{value}
+	</select>
+	<select id="Page" parameterType="Training"
+		resultType="Training">
+		select t.*,u.name as unitname from training t,unit u where t.unitid=u.id and t.name like "%${name}%"
+			<if test="unitid != null and unitid != '' ">
+				and unitid =#{unitid}
+			</if>
+		<!-- <where>
+			t.unitid=u.id
+			<if test="name != null and name != '' ">
+				and name like "%${name}%"
+			</if>
+			<if test="unit != null and unit != '' ">
+				and unitid =#{unitid}
+			</if>
+		</where> -->
+	</select>
+	<delete id="Trainingdelete" parameterType="Integer">
+		delete FROM training
+		where id=#{value}
+	</delete>
+	<select id="trainingByid" parameterType="Integer"
+		resultType="Training">
+		select t.*,u.name as unitname from training t,unit u where t.unitid=u.id and t.id=#{value}
+	</select>
+	<update id="trainingupdate" parameterType="Training">
+		<!-- update training set
+		name=#{name},unitid=#{unitid},held=#{held},ptime=#{ptime},
+		atime=#{atime},participation=#{participation},pfunds=#{pfunds},afunds=#{afunds},
+		note=#{note} where id=#{id} -->
+		update training set
+		examine=#{examine},proposal=#{proposal} where id=#{id}
+	</update>
+
+	<select id="transelect" parameterType="string"
+		resultType="Training">
+		select t.*,u.name as unitname from training t,unit u where t.unitid=u.id and u.id=#{value}
+	</select>
+
+	<update id="tranupdate" parameterType="Training">
+		update training set
+		name=#{name},unitid=#{unitid},held=#{held},ptime=#{ptime},
+		atime=#{atime},participation=#{participation},pfunds=#{pfunds},afunds=#{afunds},
+		note=#{note},target=#{target},realhold=#{realhold},realnum=#{realnum} where id=#{id}
+		<!-- update training set
+		atime=#{atime},participation=#{participation},afunds=#{afunds},
+		note=#{note} where id=#{id} -->
+	</update>
+ <update id="updateunitt" parameterType="unit">
+ update training set SPOSNOR=#{name} where SPOSNOR=#{uname}
+ </update>
+	<delete id="tdelete" parameterType="java.util.List">
+		delete from training where id in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="haha">
+			#{haha}
+		</foreach>
+	</delete>
+	
+	<!-- 课程信息操作开始 -->
+	<!-- 根据单位id查询培训会议 -->
+	<select id="queryTraningInfoByUnitid" parameterType="string"
+		resultType="Training">
+		select * from training where unitid=#{value}
+	</select>
+	<!-- //创建添加培训课程	public Integer CreateCourse(course c) -->
+	<insert id="CreateCourse" parameterType="course">
+		INSERT
+		course(coursename,teacher,trainingid)
+		VALUE(#{coursename},#{teacher},#{trainingid})
+	</insert>
+	<!-- 通过培训id查询课程信息 -->
+	<select id="queryCourseByTrainingid" parameterType="string" resultType="course">
+		select * from course where trainingid=#{value}
+	</select>
+	
+	<!-- 根据id编辑课程 -->
+	<update id="EditCourseById" parameterType="course">
+		update course set
+		coursename=#{coursename},teacher=#{teacher} where id=#{id}
+		
+	</update>
+	<!-- 根据id删除课程 -->
+	<delete id="DeleteCourseById" parameterType="course">
+		delete from course where id=#{id}
+	</delete>
+	<!-- 批量删除课程 -->
+	<delete id="DeleteCourseByIds" parameterType="list">
+        delete from course where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+	<!-- 课程信息操作结束开始 -->
+</mapper>

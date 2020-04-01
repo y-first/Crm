@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crm.mapper.ProjectPersonnelMapper">
+	<insert id="ProjectPersonneladd"
+		parameterType="ProjectPersonnel">
+		INSERT
+		project_personnel(PID,Pname,NAME,SEX,BIRTHDATE,UNIT,POSITION,PPNOTE,NOTE)
+		VALUE(#{pid},#{pname},#{name},#{sex},#{birthday},#{unit},#{position},#{ppnote},#{note})
+	</insert>
+</mapper>

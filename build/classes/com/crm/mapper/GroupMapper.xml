@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crm.mapper.GroupMapper" >
+<insert id="Groupadd" parameterType="group2">
+   insert group2 (NAME, Access, 
+      AccessTime, AccessCountry, AccessUnit,EXPENDITURE, PEXPENDITURE,days, NOTE,Fcapital,Ofunds,aim)
+       value(#{name}, #{access}, 
+      #{accesstime},#{accesscountry}, #{accessunit}, 
+      #{expenditure}, #{pexpenditure},#{days},#{note},#{Fcapital},#{Ofunds},#{aim})
+</insert>
+<update id="addperson" parameterType="group2">
+update group2 set Access=#{access} where id=#{id}
+</update>
+<select id="groupfindall" resultType="group2">
+select g.*,u.name as unitname from group2 g,unit u where g.accessunit=u.id 
+</select>
+<!-- 查询所有预算汇总 -->
+<select id="querySummaryAll" resultType="unit">
+select u.`name`,u.code,sum(g.Ofunds) as Ofunds,sum(g.Fcapital) as Fcapital,sum(g.EXPENDITURE) as sum from group2 g,unit u where g.AccessUnit=u.id GROUP BY u.id,u.name,u.`code`
+</select>
+
+<!-- 根据单位查询预算汇总 -->
+<select id="querySummaryByunit" parameterType="String" resultType="unit">
+select u.`name`,u.code,sum(g.Ofunds) as Ofunds,sum(g.Fcapital) as Fcapital,sum(g.EXPENDITURE) as sum from group2 g,unit u where u.id=#{value} and g.AccessUnit=u.id GROUP BY u.id,u.name,u.`code`
+</select>
+
+<select id="groupfindall2" parameterType="String"  resultType="group2" >
+select * from group2  where AccessUnit=#{value}
+</select>
+<delete id="deletegroup" parameterType="Integer">
+delete from group2 where id=#{value}
+</delete>
+<select id="selectByid" parameterType="Integer" resultType="group2">
+select g.*,u.name from group2 g,unit u where g.accessunit=u.id and g.id=#{value}
+</select>
+<select id="selectByunit" parameterType="String" resultType="group2">
+select g.*,u.name as unitname from group2 g,unit u  where g.accessunit=u.id and u.id=#{value}
+</select>
+<update id="groupupdate" parameterType="group2" >
+update group2 set NAME=#{name},AccessTime=#{accesstime},AccessCountry=#{accesscountry},AccessUnit=#{accessunit},
+EXPENDITURE=#{expenditure},PEXPENDITURE=#{pexpenditure},days=#{days},Ofunds=#{ofunds},Fcapital=#{fcapital},
+NOTE=#{note},Access=#{access},aim=#{aim} where id=#{id}
+</update>
+<update id="updateunit" parameterType="unit" >
+update group2 set AccessUnit=#{name}  where AccessUnit=#{uname}
+</update>
+<delete id="gdelete" parameterType="java.util.List">
+		delete from group2 where id in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="haha">
+			#{haha}
+		</foreach>
+	</delete>
+</mapper>

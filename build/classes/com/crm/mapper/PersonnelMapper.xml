@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crm.mapper.PersonnelMapper">
+<update id="updatePersonnel" parameterType="Personnel" >
+UPDATE  personnel SET NAME=#{name},SEX=#{sex},Place =#{place},UNIT=#{unit},zzmm=#{zzmm},zw=#{zw},
+zc=#{zc},Fidentity=#{fidentity},school=#{school},professional=#{professional},gtime=#{gtime},Pwork=#{pwork},IDCARE=#{idcare},head=#{head},preal=#{preal},identity=#{identity},NOTE=#{note} WHERE ID=#{id}
+</update>
+<insert id="personneladd" parameterType="Personnel" >
+insert personnel(NAME,SEX,Place,UNIT,zzmm,zw,zc,Fidentity,School,professional,Gtime,Pwork,IDCARE,Head,preal,identity,NOTE,aim)
+value(#{name},#{sex},#{place},#{unit},#{zzmm},#{zw},#{zc},#{fidentity},#{school},#{professional},#{gtime},#{pwork},#{idcare},#{head},#{preal},#{identity},#{note})
+</insert>
+<select id="selectByid" parameterType="Integer" resultType="Personnel">
+select p.*,u.name as unitname from personnel p,unit u where p.unit=u.id and p.id=#{value}
+</select>
+<select id="selectmhpersonnel" parameterType="Personnel" resultType="Personnel">
+select p.*,u.name as unitname from personnel p,unit u
+<where>
+p.unit=u.id
+<if test="name != '' ">
+ and p.name like "%${name}%" 
+</if>
+<if test="unit != '' and unit!=null ">
+ and u.id=#{unit}
+</if>
+</where>
+</select>
+
+<!-- 根据名称查询单位 -->
+<select id="selectunitByName" parameterType="String" resultType="unit">
+select * from unit where name=#{value}
+</select>
+
+
+
+<delete id="deleteUser" parameterType="Integer">
+ delete from employee where id=#{value}
+</delete>
+<select id="selectByuserid" parameterType="Integer" resultType="employee">
+select * from employee where id=#{value}
+</select>
+<select id="selectBypid" parameterType="Integer" resultType="employee">
+select * from employee where pid=#{value}
+</select>
+<select id="selectByusername" parameterType="String" resultType="employee">
+select * from employee where username=#{value}
+</select>
+<select id="selectAll" parameterType="employee" resultType="employee">
+select * from employee 
+<where>
+<if test="duty!=''">
+duty=#{duty}
+</if>
+</where>
+
+</select>
+<update id="updateUser" parameterType="employee">
+update  employee set  name=#{name},username=#{username},password=#{password} where id=#{id}
+ </update>
+ <update id="updateduty" parameterType="employee">
+update  employee set  duty=#{duty},username=#{username},password=#{password} where id=#{id}
+ </update>
+ <insert id="addEmployees" parameterType="employee">
+ insert employee(name,username,password,duty,uid,pid)
+ value(#{name},#{username},#{password},#{duty},#{uid},#{pid})
+ </insert>
+ <update id="updateuinte" parameterType="unit" >
+ update employee set uid=#{name} where uid=#{uname}
+ </update>
+ <update id="updateuintp" parameterType="unit" >
+ update personnel set UNIT=#{name} where UNIT=#{uname}
+ </update>
+ 
+ <!-- 根据人员id更新出访记录 -->
+	<!-- public boolean updateInfoabroadByPid(Integer pid); -->
+<update id="updateInfoabroadByPid" parameterType="Personnel">
+update  personnel set infoabroad=#{infoabroad} where id=#{id}
+ </update>
+ 
+ <delete id="pedelete" parameterType="java.util.List">
+		delete from personnel where id in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="haha">
+			#{haha}
+		</foreach>
+	</delete>
+</mapper>

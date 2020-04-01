@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crm.mapper.ClubMapper">
+	<select id="clubselect" parameterType="string" resultType="club">
+		SELECT o.*,u.name as unitname FROM organization o,unit u where o.sunit=u.id and u.id = #{sunit}
+	</select>
+
+	<delete id="clubdelete" parameterType="string">
+		delete from organization
+		where id = #{id}
+	</delete>
+
+	<select id="us" parameterType="string" resultType="club">
+		select o.*,u.name as unitname from
+		organization o,unit u where o.sunit=u.id and o.id=#{id}
+	</select>
+
+	<update id="clubupdate" parameterType="club">
+		update organization set id
+		= #{id} ,name=#{name}
+		,director=#{director},sgeneral=#{sgeneral},sunit=#{sunit},office=#{office},linkman=#{linkman},phone=#{phone},eontime=#{eontime},informattion=#{informattion},note=#{note}
+		where id = #{id}
+	</update>
+
+	<select id="filtrate" parameterType="clubvc" resultType="clubvc">
+		select * from organization
+		<where>
+			<if test="name != '' ">
+				 name like '%${name}%'
+			</if>
+			<if test="sunit != ''">
+			   and sunit =#{sunit}
+			</if>
+		</where>
+	</select>
+	<insert id="addUser" parameterType="employee">
+	insert  employee(name,username,password,duty,uid,pid)  
+	value(#{name},#{username},#{password},#{duty},#{uid},#{pid})
+	</insert>
+	<select id="login" parameterType="employee"
+		resultType="employee">
+		select e.*,u.name as unitname from employee e,unit u where username = #{username} and
+		password=#{password} and e.uid=u.id
+	</select>
+	<select id="selectUser" parameterType="employee"
+		resultType="employee">
+		select * from employee
+		<where>
+		<if test="name!=' '">
+		name=#{name}
+		</if>
+		</where>
+		
+	</select>
+	<select id="clubselectall" resultType="club">
+		SELECT * FROM organization
+	</select>
+	
+	<select id="tfiltrate" parameterType="clubvc" resultType="clubvc">
+		select * from organization
+		<where>
+			<if test="name != '' ">
+				 name like '%${name}%'
+			</if>
+
+			<if test="sunit != ''">
+				and sunit like '%${sunit}%'
+			</if>
+			
+		</where>
+	 </select>     
+	 
+	 <delete id="chdelete" parameterType="java.util.List">
+		delete from organization where id in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="haha">
+			#{haha}
+		</foreach>
+	</delete>          
+	
+	<select id="clubselectall1" parameterType="int" resultType="club">
+	   	SELECT * FROM organization  limit #{pg},8
+	</select>   
+	
+	<select id="clubselect1" parameterType="clubvc" resultType="club">
+	 	SELECT * FROM organization where sunit =#{uid} limit #{page},8
+	</select>
+	
+	<delete id="gdelete" parameterType="java.util.List">
+		delete from group2 where id in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="haha">
+			#{haha}
+		</foreach>
+	</delete>
+</mapper>
